@@ -3,13 +3,35 @@ import { TaskStatus } from '@utils/tasks/tasksEnums';
 import { taskApi } from '@state/apis/taskApi';
 import { useCallback } from 'react';
 import {
+	TaskDescriptionProps,
 	TaskItemProps,
+	TaskStatusButtonsProps,
 	urgencyColor,
 	urgencyTextColor,
 } from '@pages/Home/widgets/homeWidgetsUtils';
 
-function TaskItem(props: TaskItemProps) {
+function TaskDescription(props: TaskDescriptionProps) {
+	const { description, assignedTo, urgency } = props;
+
+	return (
+		<Box>
+			<Text size='md'>{description}</Text>
+			<Text mt='lg' size='sm'>
+				Assigned to: {assignedTo}
+			</Text>
+			<Box display='inline-flex'>
+				<Text size='sm'>Urgency:</Text>
+				<Text size='sm' c={urgencyTextColor(urgency)} pl='xs'>
+					{urgency.toUpperCase()}
+				</Text>
+			</Box>
+		</Box>
+	);
+}
+
+function TaskStatusButtons(props: TaskStatusButtonsProps) {
 	const { id, title, description, assignedTo, urgency } = props;
+
 	const [updateTask] = taskApi.useUpdateTaskMutation();
 	const [deleteTask] = taskApi.useDeleteTaskMutation();
 
@@ -32,52 +54,42 @@ function TaskItem(props: TaskItemProps) {
 		deleteTask(id);
 	}, [deleteTask]);
 
-	function taskDescription() {
-		return (
-			<Box>
-				<Text size='md'>{description}</Text>
-				<Text mt='lg' size='sm'>
-					Assigned to: {assignedTo}
-				</Text>
-				<Box display='inline-flex'>
-					<Text size='sm'>Urgency:</Text>
-					<Text size='sm' c={urgencyTextColor(urgency)} pl='xs'>
-						{urgency.toUpperCase()}
-					</Text>
-				</Box>
-				<Flex mt='lg' justify='space-between'>
-					<Button size='xs' onClick={() => handleTaskDelete()} color='red'>
-						Delete
-					</Button>
+	return (
+		<Flex mt='md' justify='space-between'>
+			<Button size='xs' onClick={handleTaskDelete} color='red'>
+				Delete
+			</Button>
 
-					<Flex columnGap='sm' justify={'center'}>
-						<Button
-							size='xs'
-							onClick={() => handleTaskStatusChange(TaskStatus.PENDING)}
-							color='grey'
-						>
-							Pending
-						</Button>
-						<Button
-							size='xs'
-							onClick={() => handleTaskStatusChange(TaskStatus.IN_PROGRESS)}
-							color='blue'
-						>
-							In Progress
-						</Button>
+			<Flex columnGap='sm' justify={'center'}>
+				<Button
+					size='xs'
+					onClick={() => handleTaskStatusChange(TaskStatus.PENDING)}
+					color='grey'
+				>
+					Pending
+				</Button>
+				<Button
+					size='xs'
+					onClick={() => handleTaskStatusChange(TaskStatus.IN_PROGRESS)}
+					color='blue'
+				>
+					In Progress
+				</Button>
 
-						<Button
-							size='xs'
-							onClick={() => handleTaskStatusChange(TaskStatus.DONE)}
-							color='green'
-						>
-							Done
-						</Button>
-					</Flex>
-				</Flex>
-			</Box>
-		);
-	}
+				<Button
+					size='xs'
+					onClick={() => handleTaskStatusChange(TaskStatus.DONE)}
+					color='green'
+				>
+					Done
+				</Button>
+			</Flex>
+		</Flex>
+	);
+}
+
+function TaskItem(props: TaskItemProps) {
+	const { id, title, description, assignedTo, urgency } = props;
 
 	return (
 		<Accordion.Item key={id} value={title}>
@@ -86,7 +98,21 @@ function TaskItem(props: TaskItemProps) {
 					{title}
 				</Text>
 			</Accordion.Control>
-			<Accordion.Panel>{taskDescription()}</Accordion.Panel>
+
+			<Accordion.Panel>
+				<TaskDescription
+					description={description}
+					assignedTo={assignedTo}
+					urgency={urgency}
+				/>
+				<TaskStatusButtons
+					id={id}
+					title={title}
+					description={description}
+					assignedTo={assignedTo}
+					urgency={urgency}
+				/>
+			</Accordion.Panel>
 		</Accordion.Item>
 	);
 }

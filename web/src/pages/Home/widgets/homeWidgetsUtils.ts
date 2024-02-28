@@ -31,6 +31,21 @@ export interface TaskItemProps {
 	assignedTo: string;
 	urgency: TaskUrgency;
 }
+
+export interface TaskDescriptionProps {
+	description: string;
+	assignedTo: string;
+	urgency: TaskUrgency;
+}
+
+export interface TaskStatusButtonsProps {
+	id: string;
+	title: string;
+	description: string;
+	assignedTo: string;
+	urgency: TaskUrgency;
+}
+
 export interface TasksListProps {
 	tasks?: Task[];
 }
