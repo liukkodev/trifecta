@@ -98,12 +98,23 @@ const RegisterPage: React.FC = () => {
 						placeholder='Six character minimum'
 						{...form.getInputProps('password')}
 					/>
+
 					<Group justify='center' mt='lg'>
 						<Button variant='light' onClick={form.reset}>
 							Reset
 						</Button>
 						<Button type='submit'>Submit</Button>
 					</Group>
+
+					<Flex justify='center' mt='lg'>
+						<Button
+							c='blue'
+							bg='transparent'
+							onClick={() => navigate('/login')}
+						>
+							Login instead
+						</Button>
+					</Flex>
 				</form>
 			</Box>
 		</Flex>
