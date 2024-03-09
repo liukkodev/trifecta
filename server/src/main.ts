@@ -1,9 +1,10 @@
 import * as cookieParser from 'cookie-parser';
-import { AppModule } from './app.module';
-import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
-import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { AppModule } from 'src/app.module';
+import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { TransformInterceptor } from 'src/transform.interceptor';
 
 require('dotenv').config();
 
@@ -21,6 +22,8 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
+
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   app.use(
     rateLimit({

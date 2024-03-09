@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { TaskStatus, TaskUrgency } from 'src/tasks/enums/tasks.enums';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -32,5 +33,6 @@ export class Task {
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.tasks, { eager: false })
+  @Exclude({ toPlainOnly: true })
   user: User;
 }

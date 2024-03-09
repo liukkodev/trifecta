@@ -9,5 +9,4 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   assignedTo?: string;
   urgency?: TaskUrgency;
   status?: TaskStatus;
-  user?: User;
 }

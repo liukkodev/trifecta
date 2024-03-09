@@ -6,6 +6,7 @@ import { Task } from 'src/tasks/entities/task.entity';
 import { TaskStatus } from 'src/tasks/enums/tasks.enums';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { RemoveTaskResponse } from 'src/tasks/types/task.types';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TasksService {
@@ -14,9 +15,16 @@ export class TasksService {
     private tasksRepository: Repository<Task>,
   ) {}
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    console.log('user', user);
+
     try {
-      return await this.tasksRepository.save(createTaskDto);
+      const task = this.tasksRepository.create({
+        ...createTaskDto,
+        user,
+      });
+
+      return await this.tasksRepository.save(task);
     } catch (err) {
       throw new Error(err);
     }

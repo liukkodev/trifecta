@@ -7,5 +7,4 @@ export class CreateTaskDto {
   assignedTo: string;
   urgency: TaskUrgency;
   status: TaskStatus;
-  user: User;
 }
