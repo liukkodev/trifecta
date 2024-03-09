@@ -16,8 +16,6 @@ export class TasksService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
-    console.log('user', user);
-
     try {
       const task = this.tasksRepository.create({
         ...createTaskDto,
