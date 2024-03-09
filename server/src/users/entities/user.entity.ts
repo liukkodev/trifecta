@@ -1,8 +1,10 @@
+import { Task } from 'src/tasks/entities/task.entity';
 import { UserRole } from 'src/users/enums/users.enums';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,4 +30,7 @@ export class User {
 
   @Column({ nullable: true })
   refreshToken?: string;
+
+  @OneToMany(() => Task, (task) => task.user, { eager: true })
+  tasks: Task[];
 }
